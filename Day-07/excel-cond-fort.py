@@ -1,3 +1,6 @@
+### This program applies conditional formatting to an Excel file using openpyxl. It highlights cells based on their values.
+
+
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 from random import randint
