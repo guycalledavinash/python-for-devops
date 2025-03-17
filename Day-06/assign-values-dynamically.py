@@ -1,5 +1,6 @@
 class OperatorDemo:
     def __init__(self, a, b):
+        """Initialize the class with two numbers."""
         self.a = a
         self.b = b
 
@@ -20,17 +21,20 @@ class OperatorDemo:
             return {"error": str(e)}
 
     def assignment_operations(self):
-        """Demonstrates assignment operators."""
-        x = self.a
-        x += self.b
-        x -= self.b
-        x *= self.b
-        if self.b != 0:
-            x /= self.b
-            x //= self.b
-            x %= self.b
-        x **= 2
-        return x
+        """Demonstrates assignment operators and returns the final value."""
+        try:
+            x = self.a
+            x += self.b
+            x -= self.b
+            x *= self.b
+            if self.b != 0:
+                x /= self.b
+                x //= self.b
+                x %= self.b
+            x **= 2
+            return x
+        except Exception as e:
+            return {"error": str(e)}
 
     def relational_operations(self):
         """Returns relational operator comparisons."""
@@ -58,6 +62,18 @@ class OperatorDemo:
             "is_not_operator": self.a is not self.b
         }
 
+    def bitwise_operations(self):
+        """Performs bitwise operations and returns results."""
+        return {
+            "bitwise_and": self.a & self.b,
+            "bitwise_or": self.a | self.b,
+            "bitwise_xor": self.a ^ self.b,
+            "bitwise_not_a": ~self.a,
+            "bitwise_not_b": ~self.b,
+            "left_shift": self.a << 1,
+            "right_shift": self.b >> 1
+        }
+
 
 if __name__ == "__main__":
     obj = OperatorDemo(10, 5)  # Example inputs
@@ -66,3 +82,4 @@ if __name__ == "__main__":
     print("Relational Operations:", obj.relational_operations())
     print("Logical Operations:", obj.logical_operations())
     print("Identity Operations:", obj.identity_operations())
+    print("Bitwise Operations:", obj.bitwise_operations())
