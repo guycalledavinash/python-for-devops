@@ -30,7 +30,6 @@ def manage_instance(instance_id, action):
             print(f"Started instance: {instance_id}")
         elif action == "stop":
             ec2.stop_instances(InstanceIds=[instance_id])
-            print(f"Stopped instance: {instance_id}")
         else:
             print("Invalid action. Use 'start' or 'stop'.")
     except ClientError as e:
@@ -60,9 +59,9 @@ def tag_resource(resource_arn, tags):
         formatted_tags = [{'Key': k, 'Value': v} for k, v in tags.items()]
         resource_tagging.tag_resources(
             ResourceARNList=[resource_arn],
-            Tags=tags
+            Tags=formatted_tags
         )
-        print(f"Tagged resource {resource_arn} with {tags}")
+        print(f"Tagged resource {resource_arn} with {formatted_tags}")
     except ClientError as e:
         print(f"Error tagging resource: {e}")
 
