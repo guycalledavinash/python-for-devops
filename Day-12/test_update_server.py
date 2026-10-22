@@ -23,7 +23,7 @@ class UpdateServerConfigTests(unittest.TestCase):
 
     def test_updates_existing_key(self):
         self.write_config("MAX_CONNECTIONS=100\n")
-        old_value, updated = update_server.update_server_config(
+        old_value, _, _, updated = update_server.update_server_config(
             self.config_path, "MAX_CONNECTIONS", "600"
         )
         self.assertEqual(old_value, "100")
@@ -48,7 +48,7 @@ class UpdateServerConfigTests(unittest.TestCase):
             "LOG_LEVEL=INFO\n"
         )
         self.write_config(original)
-        _, updated = update_server.update_server_config(
+        _, _, updated = update_server.update_server_config(
             self.config_path, "MAX_CONNECTIONS", "600"
         )
         self.assertEqual(
@@ -64,7 +64,7 @@ class UpdateServerConfigTests(unittest.TestCase):
 
     def test_value_can_contain_equals(self):
         self.write_config("CONNECTION_STRING=old\n")
-        _, updated = update_server.update_server_config(
+        _, _, updated = update_server.update_server_config(
             self.config_path, "CONNECTION_STRING", "host=db;options=a=b"
         )
         self.assertEqual(updated, "CONNECTION_STRING=host=db;options=a=b\n")
@@ -84,7 +84,7 @@ class UpdateServerConfigTests(unittest.TestCase):
     def test_preserves_crlf_and_missing_final_newline(self):
         original = b"PORT=8080\r\nMAX_CONNECTIONS=100"
         self.config_path.write_bytes(original)
-        _, updated = update_server.update_server_config(
+        _, _, updated = update_server.update_server_config(
             self.config_path, "MAX_CONNECTIONS", "600"
         )
         self.assertEqual(updated.encode("utf-8"), b"PORT=8080\r\nMAX_CONNECTIONS=600")
