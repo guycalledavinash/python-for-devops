@@ -91,8 +91,8 @@ def _atomic_replace(path, content):
 def update_server_config(file_path, key, value, apply=False):
     """Propose an update, writing it only when apply=True.
 
-    Returns (old_value, updated_content). File read and write errors are allowed
-    to propagate so the CLI can report them without claiming success.
+    Returns (old_value, original_content, updated_content). File read and write
+    errors are allowed to propagate so the CLI can report them accurately.
     """
     _validate_arguments(key, value)
     path = Path(file_path)
@@ -105,7 +105,7 @@ def update_server_config(file_path, key, value, apply=False):
     updated, old_value = _build_updated_content(original, key, value)
     if apply:
         _atomic_replace(path, updated)
-    return old_value, updated
+    return old_value, original, updated
 
 
 def main(argv=None):
@@ -124,7 +124,7 @@ def main(argv=None):
 
     try:
         _validate_arguments(args.key, args.value)
-        old_value, updated = update_server_config(
+        old_value, original, updated = update_server_config(
             args.file, args.key, args.value, apply=args.apply
         )
     except ConfigUpdateError as error:
@@ -144,7 +144,7 @@ def main(argv=None):
             f"{old_value!r} -> {args.value!r}"
         )
         diff = difflib.unified_diff(
-            Path(args.file).read_text(encoding="utf-8").splitlines(keepends=True),
+            original.splitlines(keepends=True),
             updated.splitlines(keepends=True),
             fromfile=args.file,
             tofile=f"{args.file} (proposed)",
