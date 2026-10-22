@@ -54,7 +54,9 @@ def _build_updated_content(original, key, value):
         )
 
     index, left, newline, old_value = matches[0]
-    lines[index] = f"{left}={value}{newline}"
+    right = lines[index].partition("=")[2]
+    value_prefix = right[: len(right) - len(right.lstrip(" \\t"))]
+    lines[index] = f"{left}={value_prefix}{value}{newline}"
     return "".join(lines), old_value
 
 
