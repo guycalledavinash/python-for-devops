@@ -23,7 +23,7 @@ class UpdateServerConfigTests(unittest.TestCase):
 
     def test_updates_existing_key(self):
         self.write_config("MAX_CONNECTIONS=100\n")
-        old_value, _, _, updated = update_server.update_server_config(
+        old_value, _, updated = update_server.update_server_config(
             self.config_path, "MAX_CONNECTIONS", "600"
         )
         self.assertEqual(old_value, "100")
